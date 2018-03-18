@@ -10,11 +10,7 @@ from keras.callbacks import LearningRateScheduler, ModelCheckpoint, TensorBoard,
 from time import  time
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import load_model
-# def my_init(shape, name=None):
-#     value = np.random.random(shape)
-#     return K.variable(value, name=name)
-
-
+from traffic_sign_config import get_traffic_sign_config
 def train():
     lr = 0.002
     batch_size = 16
@@ -29,11 +25,11 @@ def train():
 
     datagen = ImageDataGenerator(featurewise_center=False,
                                  featurewise_std_normalization=False,
-                                 width_shift_range=0.15,
-                                 height_shift_range=0.15,
-                                 zoom_range=0.2,
+                                 width_shift_range=0.2,
+                                 height_shift_range=0.2,
+                                 zoom_range=0.3,
                                  shear_range=0.15,
-                                 rotation_range=10., )
+                                 rotation_range=30., )
     datagen.fit(X_train)
 
     history = model.fit_generator(datagen.flow(X_train, y_train, batch_size=batch_size),
@@ -47,7 +43,8 @@ def train():
     print (end - start)
 
 def test():
-    X_train, y_train, X_val, y_val, X_test, y_test = prepare_data()
+    _, _, _, _, X_test, y_test = prepare_data()
+    signs = get_traffic_sign_config()
     start = time()
     model = load_model('model.h5')
     pred = model.predict(X_test,batch_size=1000)
@@ -55,6 +52,9 @@ def test():
     y_pred = np.empty(12630)
     for i in range(0,12630):
         y_pred[i] = (np.argmax(pred[i][:]))
+        if y_pred[i] != y_test[i]:
+	    print "**************************************************************************"
+            print "the model prediction is %s,correct label is %s"%(signs[y_pred[i]],signs[y_test[i]])
     acc = np.mean(y_pred==y_test)
     print("Test accuracy = {}".format(acc))
     print  (end-start)
