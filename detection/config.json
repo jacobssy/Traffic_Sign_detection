@@ -1,0 +1,43 @@
+{
+    "model" : {
+        "architecture":         "YoloTiny",
+        "input_size":           416,
+        "anchors_traffic":      [0.29,0.52, 0.43,0.79, 0.62,1.10, 0.92,1.61, 1.44,2.45],
+         "anchors" :            [1.03,1.73, 2.57,4.72, 4.48,9.18, 8.07,5.41, 10.30,11.09],
+        "max_box_per_image":    50,
+        "labels":                ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat","chair","cow","diningtable","dog","horse","motorbike","pottedplant","sheep","sofa","train","tvmonitor","person"]
+    },
+
+    "train": {
+        "train_annot_folder":   "/data4/sunsiyuan/data/VOC/VOCdevkit/VOC2012/Annotations/",
+        "train_image_folder":   "/data4/sunsiyuan/data/VOC/VOCdevkit/VOC2012/JPEGImages/",
+
+        "train_times":          1,
+        "pretrained_weights":   "/data/sunsiyuan/2018learning/ssy_experiment/Traffic_Sign_detection/detection/weights_VOC2012/yoloV2Tiny.h5",
+        "batch_size":           16,
+        "learning_rate":        1e-4,
+        "nb_epoch":             100,
+        "warmup_epochs":        0,
+
+        "object_scale":         5.0 ,
+        "no_object_scale":      1.0,
+        "coord_scale":          1.0,
+        "class_scale":          1.0,
+
+        "saved_weights_name":   "yoloV2Tiny.h5",
+        "debug":                true
+    },
+
+    "valid": {
+        "valid_image_folder":   "",
+        "valid_annot_folder":   "",
+
+        "valid_times":          1
+    },
+    "test":{
+        "image": ["/data/sunsiyuan/2018learning/ssy_experiment/Traffic_Sign_detection/detection/test/test0.jpg",
+            "/data/sunsiyuan/2018learning/ssy_experiment/Traffic_Sign_detection/detection/test/test1.jpg",
+            "/data/sunsiyuan/2018learning/ssy_experiment/Traffic_Sign_detection/detection/test/test2.jpg"],
+        "video": ""
+    }
+}
